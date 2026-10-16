@@ -48,4 +48,4 @@ MySQL 建库取数 → Excel 报表自动化 → Power BI 交互看板 → 销�
 
 ## 作者
 
-苏家贤 · 2026 届本科（软件工程）· your_mail@example.com
+苏家贤 · 2026 届本科（软件工程）· 3393587105@qq.com
