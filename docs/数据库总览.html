@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>retail_project 数据库总览</title>
+<style>
+  :root{
+    --bg:#F7F6F2;--card:#FFFFFF;--line:#E3E1D9;--line2:#D3D1C7;
+    --tx:#2C2C2A;--tx2:#5F5E5A;--tx3:#888780;
+    --blue:#185FA5;--blue-bg:#E6F1FB;--blue-line:#B5D4F4;
+    --teal:#0F6E56;--teal-bg:#E1F5EE;--teal-line:#9FE1CB;
+    --amber:#854F0B;--amber-bg:#FAEEDA;--amber-line:#FAC775;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:14px;line-height:1.6;}
+  .wrap{max-width:1000px;margin:0 auto;padding:36px 24px 64px;}
+  h1{font-size:24px;font-weight:500;margin:0 0 6px;}
+  .sub{color:var(--tx2);font-size:13px;margin:0 0 26px;}
+  h2{font-size:15px;font-weight:500;margin:0 0 16px;padding-left:10px;border-left:3px solid var(--blue);}
+  section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:20px;}
+  .cards{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px;}
+  .c{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 12px;text-align:center;}
+  .c .n{font-family:var(--mono);font-size:13px;color:var(--blue);font-weight:500;}
+  .c .r{font-size:20px;font-weight:500;margin:4px 0 2px;}
+  .c .u{font-size:11px;color:var(--tx3);}
+  .tbl{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:18px;overflow:hidden;}
+  .th{display:flex;align-items:baseline;gap:10px;padding:16px 22px 12px;border-bottom:1px solid var(--line);}
+  .th .nm{font-family:var(--mono);font-size:15px;font-weight:500;}
+  .th .cn{font-size:13px;color:var(--tx2);}
+  .th .cnt{font-size:12px;color:var(--teal);background:var(--teal-bg);border:1px solid var(--teal-line);border-radius:20px;padding:1px 10px;margin-left:auto;}
+  .body{padding:14px 22px 18px;}
+  .note{font-size:12.5px;color:var(--tx2);margin:0 0 12px;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{font-weight:500;color:var(--tx2);font-size:11.5px;background:#FCFCFA;}
+  code{font-family:var(--mono);font-size:12px;background:#F1EFE8;padding:1px 5px;border-radius:4px;}
+  .pk{color:var(--amber);background:var(--amber-bg);border:1px solid var(--amber-line);border-radius:4px;padding:0 5px;font-size:10.5px;margin-left:4px;}
+  .type{color:var(--tx3);font-family:var(--mono);font-size:11.5px;}
+  .stitle{font-size:12px;color:var(--tx2);margin:16px 0 8px;font-weight:500;}
+  .sv{font-family:var(--mono);font-size:11.5px;color:var(--tx2);}
+  .foot{font-size:12px;color:var(--tx3);text-align:center;margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>retail_project 数据库总览</h1>
+  <p class="sub">MySQL 8.0 · 零售项目 · 6 张表 · 数据期间 2026-07 ~ 2026-09</p>
+
+<div class="cards">
+<div class="c"><div class="n">stores</div><div class="r">3</div><div class="u">门店 · 3 行</div></div>
+<div class="c"><div class="n">products</div><div class="r">15</div><div class="u">商品 · 15 行</div></div>
+<div class="c"><div class="n">members</div><div class="r">30</div><div class="u">会员 · 30 行</div></div>
+<div class="c"><div class="n">orders</div><div class="r">2,542</div><div class="u">订单 · 2542 行</div></div>
+<div class="c"><div class="n">inventory</div><div class="r">135</div><div class="u">库存 · 135 行</div></div>
+<div class="c"><div class="n">date_dim</div><div class="r">365</div><div class="u">日期维度 · 365 行</div></div>
+</div>
+<section>
+  <h2>表关系（星型结构：orders 是事实表，其余是维度表）</h2>
+  <svg width="100%" viewBox="0 0 680 350" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>retail_project 表关系图</title>
+  <desc>stores、products、members 通过外键关联到订单表 orders；inventory 关联 stores 与 products；date_dim 与订单日期逻辑关联</desc>
+  <defs>
+  <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+  <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  </defs>
+  <rect x="40" y="40" width="150" height="44" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="115" y="62" font-size="13" font-weight="500" fill="#042C53" text-anchor="middle" dominant-baseline="central">stores</text>
+  <rect x="265" y="40" width="150" height="44" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="340" y="62" font-size="13" font-weight="500" fill="#042C53" text-anchor="middle" dominant-baseline="central">products</text>
+  <rect x="490" y="40" width="150" height="44" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="565" y="62" font-size="13" font-weight="500" fill="#042C53" text-anchor="middle" dominant-baseline="central">members</text>
+  <rect x="250" y="150" width="180" height="56" rx="10" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="340" y="170" font-size="14" font-weight="500" fill="#04342C" text-anchor="middle" dominant-baseline="central">orders</text>
+  <text x="340" y="189" font-size="11" fill="#0F6E56" text-anchor="middle" dominant-baseline="central">2542 行 · 事实表</text>
+  <rect x="40" y="270" width="150" height="44" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="115" y="292" font-size="13" font-weight="500" fill="#042C53" text-anchor="middle" dominant-baseline="central">inventory</text>
+  <rect x="490" y="270" width="150" height="44" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text x="565" y="292" font-size="13" font-weight="500" fill="#412402" text-anchor="middle" dominant-baseline="central">date_dim</text>
+  <line x1="140" y1="84" x2="268" y2="148" stroke="#888780" stroke-width="0.5" marker-end="url(#a)"/>
+  <line x1="340" y1="84" x2="340" y2="148" stroke="#888780" stroke-width="0.5" marker-end="url(#a)"/>
+  <line x1="540" y1="84" x2="412" y2="148" stroke="#888780" stroke-width="0.5" marker-end="url(#a)"/>
+  <line x1="140" y1="268" x2="268" y2="208" stroke="#888780" stroke-width="0.5" marker-end="url(#a)"/>
+  <line x1="540" y1="268" x2="412" y2="208" stroke="#888780" stroke-width="0.5" stroke-dasharray="4 3" marker-end="url(#a)"/>
+  <text x="200" y="112" font-size="11" fill="#5F5E5A" text-anchor="middle">store_id</text>
+  <text x="352" y="112" font-size="11" fill="#5F5E5A">product_id</text>
+  <text x="500" y="112" font-size="11" fill="#5F5E5A" text-anchor="middle">member_id</text>
+  <text x="185" y="246" font-size="11" fill="#5F5E5A" text-anchor="middle">store_id / product_id</text>
+  <text x="500" y="246" font-size="11" fill="#5F5E5A" text-anchor="middle">order_date 按日期关联</text>
+  </svg>
+</section>
+<div class="tbl">
+<div class="th"><span class="nm">stores</span><span class="cn">门店</span><span class="cnt">3 行</span></div>
+<div class="body">
+<p class="note">3 家门店的主数据</p>
+<table><tr><th style="width:20%">字段</th><th style="width:18%">类型</th><th>含义</th></tr>
+<tr><td><code>store_id</code><span class="pk">PK</span></td><td class="type">VARCHAR(10)</td><td>主键，门店编号，如 ST001</td></tr>
+<tr><td><code>store_name</code></td><td class="type">VARCHAR(50)</td><td>门店名称</td></tr>
+<tr><td><code>city</code></td><td class="type">VARCHAR(20)</td><td>所在城市</td></tr>
+<tr><td><code>region</code></td><td class="type">VARCHAR(20)</td><td>大区</td></tr>
+<tr><td><code>open_date</code></td><td class="type">DATE</td><td>开业日期</td></tr>
+</table>
+<div class="stitle">样本数据（前 3 行）</div>
+<table><tr><th>store_id</th><th>store_name</th><th>city</th><th>region</th><th>open_date</th></tr>
+<tr><td class="sv">ST001</td><td class="sv">佛山高明店</td><td class="sv">佛山</td><td class="sv">华南</td><td class="sv">2020-05-01</td></tr>
+<tr><td class="sv">ST002</td><td class="sv">广州天河店</td><td class="sv">广州</td><td class="sv">华南</td><td class="sv">2021-03-15</td></tr>
+<tr><td class="sv">ST003</td><td class="sv">东莞南城店</td><td class="sv">东莞</td><td class="sv">华南</td><td class="sv">2022-09-01</td></tr>
+</table>
+</div></div>
+<div class="tbl">
+<div class="th"><span class="nm">products</span><span class="cn">商品</span><span class="cnt">15 行</span></div>
+<div class="body">
+<p class="note">15 个 SKU 的商品主数据，品类在 category 字段</p>
+<table><tr><th style="width:20%">字段</th><th style="width:18%">类型</th><th>含义</th></tr>
+<tr><td><code>product_id</code><span class="pk">PK</span></td><td class="type">VARCHAR(10)</td><td>主键，商品编号，如 P001</td></tr>
+<tr><td><code>product_name</code></td><td class="type">VARCHAR(100)</td><td>商品名称</td></tr>
+<tr><td><code>category</code></td><td class="type">VARCHAR(50)</td><td>一级品类：男装 / 女装 / 配饰</td></tr>
+<tr><td><code>sub_category</code></td><td class="type">VARCHAR(50)</td><td>二级品类，如 衬衫 / 连衣裙</td></tr>
+<tr><td><code>price</code></td><td class="type">DECIMAL(10,2)</td><td>吊牌价</td></tr>
+<tr><td><code>cost</code></td><td class="type">DECIMAL(10,2)</td><td>成本价</td></tr>
+</table>
+<div class="stitle">样本数据（前 6 行）</div>
+<table><tr><th>product_id</th><th>product_name</th><th>category</th><th>sub_category</th><th>price</th><th>cost</th></tr>
+<tr><td class="sv">P001</td><td class="sv">纯棉衬衫</td><td class="sv">男装</td><td class="sv">衬衫</td><td class="sv">199</td><td class="sv">80</td></tr>
+<tr><td class="sv">P002</td><td class="sv">休闲T恤</td><td class="sv">男装</td><td class="sv">T恤</td><td class="sv">129</td><td class="sv">45</td></tr>
+<tr><td class="sv">P003</td><td class="sv">商务西装</td><td class="sv">男装</td><td class="sv">西装</td><td class="sv">899</td><td class="sv">350</td></tr>
+<tr><td class="sv">P004</td><td class="sv">Polo衫</td><td class="sv">男装</td><td class="sv">Polo衫</td><td class="sv">169</td><td class="sv">65</td></tr>
+<tr><td class="sv">P005</td><td class="sv">休闲夹克</td><td class="sv">男装</td><td class="sv">夹克</td><td class="sv">459</td><td class="sv">180</td></tr>
+<tr><td class="sv">P006</td><td class="sv">亚麻长裤</td><td class="sv">女装</td><td class="sv">长裤</td><td class="sv">299</td><td class="sv">120</td></tr>
+</table>
+</div></div>
+<div class="tbl">
+<div class="th"><span class="nm">members</span><span class="cn">会员</span><span class="cnt">30 行</span></div>
+<div class="body">
+<p class="note">30 位会员，member_id 与 orders.member_id 对应</p>
+<table><tr><th style="width:20%">字段</th><th style="width:18%">类型</th><th>含义</th></tr>
+<tr><td><code>member_id</code><span class="pk">PK</span></td><td class="type">VARCHAR(10)</td><td>主键，会员编号，如 M01</td></tr>
+<tr><td><code>member_name</code></td><td class="type">VARCHAR(50)</td><td>会员姓名</td></tr>
+<tr><td><code>gender</code></td><td class="type">VARCHAR(10)</td><td>性别</td></tr>
+<tr><td><code>age</code></td><td class="type">INT</td><td>年龄</td></tr>
+<tr><td><code>level</code></td><td class="type">VARCHAR(20)</td><td>会员等级：普通 / 白银 / 黄金 / 铂金</td></tr>
+<tr><td><code>join_date</code></td><td class="type">DATE</td><td>入会日期</td></tr>
+<tr><td><code>store_id</code></td><td class="type">VARCHAR(10)</td><td>归属门店</td></tr>
+</table>
+<div class="stitle">样本数据（前 5 行）</div>
+<table><tr><th>member_id</th><th>member_name</th><th>gender</th><th>age</th><th>level</th><th>join_date</th><th>store_id</th></tr>
+<tr><td class="sv">M01</td><td class="sv">杨伟伟</td><td class="sv">女</td><td class="sv">41</td><td class="sv">黄金</td><td class="sv">2026-03-01</td><td class="sv">ST001</td></tr>
+<tr><td class="sv">M02</td><td class="sv">吴军</td><td class="sv">男</td><td class="sv">45</td><td class="sv">普通</td><td class="sv">2023-04-01</td><td class="sv">ST002</td></tr>
+<tr><td class="sv">M03</td><td class="sv">周娟</td><td class="sv">女</td><td class="sv">41</td><td class="sv">普通</td><td class="sv">2023-06-28</td><td class="sv">ST003</td></tr>
+<tr><td class="sv">M04</td><td class="sv">徐敏娜</td><td class="sv">女</td><td class="sv">41</td><td class="sv">普通</td><td class="sv">2026-03-18</td><td class="sv">ST001</td></tr>
+<tr><td class="sv">M05</td><td class="sv">何敏艳</td><td class="sv">女</td><td class="sv">21</td><td class="sv">黄金</td><td class="sv">2023-01-01</td><td class="sv">ST002</td></tr>
+</table>
+</div></div>
+<div class="tbl">
+<div class="th"><span class="nm">orders</span><span class="cn">订单</span><span class="cnt">2542 行</span></div>
+<div class="body">
+<p class="note">事实表，一行 = 一张订单，共 2542 行（2026-07 ~ 2026-09）</p>
+<table><tr><th style="width:20%">字段</th><th style="width:18%">类型</th><th>含义</th></tr>
+<tr><td><code>order_id</code><span class="pk">PK</span></td><td class="type">VARCHAR(20)</td><td>主键，订单号，如 O000001</td></tr>
+<tr><td><code>order_date</code></td><td class="type">DATE</td><td>下单日期</td></tr>
+<tr><td><code>store_id</code></td><td class="type">VARCHAR(10)</td><td>外键 → stores.store_id</td></tr>
+<tr><td><code>product_id</code></td><td class="type">VARCHAR(10)</td><td>外键 → products.product_id</td></tr>
+<tr><td><code>member_id</code></td><td class="type">VARCHAR(10)</td><td>外键 → members.member_id；空串表示非会员</td></tr>
+<tr><td><code>quantity</code></td><td class="type">INT</td><td>购买件数</td></tr>
+<tr><td><code>unit_price</code></td><td class="type">DECIMAL(10,2)</td><td>成交单价（吊牌价 × 折扣）</td></tr>
+<tr><td><code>discount</code></td><td class="type">DECIMAL(5,2)</td><td>折扣率，1.00 = 无折扣，小于 1 即打折</td></tr>
+<tr><td><code>sales_amount</code></td><td class="type">DECIMAL(10,2)</td><td>销售额 = quantity × unit_price，聚合时用这个字段</td></tr>
+</table>
+<div class="stitle">样本数据（前 5 行）</div>
+<table><tr><th>order_id</th><th>order_date</th><th>store_id</th><th>product_id</th><th>member_id</th><th>quantity</th><th>unit_price</th><th>discount</th><th>sales_amount</th></tr>
+<tr><td class="sv">O000001</td><td class="sv">2026-07-01</td><td class="sv">ST001</td><td class="sv">P007</td><td class="sv">M13</td><td class="sv">1</td><td class="sv">399.00</td><td class="sv">1.00</td><td class="sv">399.00</td></tr>
+<tr><td class="sv">O000002</td><td class="sv">2026-07-01</td><td class="sv">ST001</td><td class="sv">P002</td><td class="sv">M13</td><td class="sv">2</td><td class="sv">129.00</td><td class="sv">0.95</td><td class="sv">245.10</td></tr>
+<tr><td class="sv">O000003</td><td class="sv">2026-07-01</td><td class="sv">ST001</td><td class="sv">P009</td><td class="sv"></td><td class="sv">3</td><td class="sv">219.00</td><td class="sv">1.00</td><td class="sv">657.00</td></tr>
+<tr><td class="sv">O000004</td><td class="sv">2026-07-01</td><td class="sv">ST001</td><td class="sv">P015</td><td class="sv">M17</td><td class="sv">2</td><td class="sv">299.00</td><td class="sv">1.00</td><td class="sv">598.00</td></tr>
+<tr><td class="sv">O000005</td><td class="sv">2026-07-01</td><td class="sv">ST001</td><td class="sv">P009</td><td class="sv"></td><td class="sv">3</td><td class="sv">219.00</td><td class="sv">1.00</td><td class="sv">657.00</td></tr>
+</table>
+</div></div>
+<div class="tbl">
+<div class="th"><span class="nm">inventory</span><span class="cn">库存</span><span class="cnt">135 行</span></div>
+<div class="body">
+<p class="note">每月 1 号的库存快照，共 135 行（3 店 × 15 SKU × 3 月）</p>
+<table><tr><th style="width:20%">字段</th><th style="width:18%">类型</th><th>含义</th></tr>
+<tr><td><code>inventory_date</code><span class="pk">PK</span></td><td class="type">DATE</td><td>主键之一，快照日期（每月 1 号）</td></tr>
+<tr><td><code>store_id</code><span class="pk">PK</span></td><td class="type">VARCHAR(10)</td><td>主键之一，门店</td></tr>
+<tr><td><code>product_id</code><span class="pk">PK</span></td><td class="type">VARCHAR(10)</td><td>主键之一，商品</td></tr>
+<tr><td><code>stock_qty</code></td><td class="type">INT</td><td>期初库存</td></tr>
+<tr><td><code>in_qty</code></td><td class="type">INT</td><td>当月进货量</td></tr>
+<tr><td><code>out_qty</code></td><td class="type">INT</td><td>当月售出量</td></tr>
+</table>
+<div class="stitle">样本数据（前 4 行）</div>
+<table><tr><th>inventory_date</th><th>store_id</th><th>product_id</th><th>stock_qty</th><th>in_qty</th><th>out_qty</th></tr>
+<tr><td class="sv">2026-07-01</td><td class="sv">ST001</td><td class="sv">P001</td><td class="sv">85</td><td class="sv">15</td><td class="sv">66</td></tr>
+<tr><td class="sv">2026-08-01</td><td class="sv">ST001</td><td class="sv">P001</td><td class="sv">34</td><td class="sv">38</td><td class="sv">58</td></tr>
+<tr><td class="sv">2026-09-01</td><td class="sv">ST001</td><td class="sv">P001</td><td class="sv">15</td><td class="sv">30</td><td class="sv">52</td></tr>
+<tr><td class="sv">2026-07-01</td><td class="sv">ST001</td><td class="sv">P002</td><td class="sv">60</td><td class="sv">34</td><td class="sv">60</td></tr>
+</table>
+</div></div>
+<div class="tbl">
+<div class="th"><span class="nm">date_dim</span><span class="cn">日期维度</span><span class="cnt">365 行</span></div>
+<div class="body">
+<p class="note">程序生成，2026 全年 365 天，用于按周/周末分析</p>
+<table><tr><th style="width:20%">字段</th><th style="width:18%">类型</th><th>含义</th></tr>
+<tr><td><code>date_id</code><span class="pk">PK</span></td><td class="type">DATE</td><td>主键，日期</td></tr>
+<tr><td><code>year</code></td><td class="type">INT</td><td>年</td></tr>
+<tr><td><code>month</code></td><td class="type">INT</td><td>月</td></tr>
+<tr><td><code>day</code></td><td class="type">INT</td><td>日</td></tr>
+<tr><td><code>week</code></td><td class="type">INT</td><td>一年中第几周</td></tr>
+<tr><td><code>weekday</code></td><td class="type">INT</td><td>星期（0=周一 … 6=周日）</td></tr>
+<tr><td><code>is_weekend</code></td><td class="type">TINYINT</td><td>是否周末：1=是，0=否</td></tr>
+</table>
+</div></div>
+<p class="foot">数据源：retail_project_v2/csv/*.csv · 已直连 MySQL 8.0 (localhost:3306 / retail_project) 核对，行数与 T1–T7 结果均与 day1_verify.sql 预期一致</p>
+</div></body></html>

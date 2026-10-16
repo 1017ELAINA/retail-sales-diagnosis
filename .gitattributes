@@ -1,0 +1,7 @@
+# 统一换行符，避免不同机器上出现"整文件都被改过"的假 diff
+* text=auto eol=lf
+
+# 二进制文件不做换行转换
+*.xlsx binary
+*.pbix binary
+*.pdf binary

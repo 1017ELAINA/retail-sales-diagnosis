@@ -1,0 +1,19 @@
+# WPS / Office 临时锁文件（上传了别人打不开）
+~$*
+*.tmp
+
+# 系统文件
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 编辑器 / 工具目录
+.idea/
+.vscode/
+.workbuddy-ai/
+output/
+*.log
