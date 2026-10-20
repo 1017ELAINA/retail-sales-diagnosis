@@ -53,6 +53,26 @@ MySQL 建库取数 → Excel 报表自动化 → Power BI 交互看板 → 销�
 └── docs/        数据库结构说明（6 表字段含义与关系图）
 ```
 
+## 三个项目 → 文件对照
+
+仓库**按技术栈组织**（data / sql / excel / powerbi / report / docs），不按项目分目录——因为项目一（诊断）和项目二（工程化）共用同一套 SQL、Excel、Power BI 资产，拆不开。找某个项目的文件，按下表对照：
+
+| 项目 | 组成部分 | 对应文件 |
+|---|---|---|
+| **项目一**<br>销售诊断 | 取数与归因 | `sql/04_business_queries.sql`、`sql/05_window_functions.sql` |
+| | 交互看板 | `powerbi/Day5_看板.pbix`、`powerbi/Day5_看板.pdf` |
+| | 诊断报告 | `report/9月门店销售诊断报告.pdf`（9 页） |
+| **项目二**<br>数据集市与报表自动化 | 建库 / 导数 / 核对 | `sql/01_schema.sql`、`sql/02_import.sql`、`sql/03_verify.sql` |
+| | 一键刷新日报 | `excel/Day4_Excel日报.xlsx` |
+| | 8 个指标字典 | `excel/Day4_指标字典.xlsx` |
+| | 星型模型与看板 | `powerbi/Day5_看板.pbix`（10 个 DAX 度量、3 页） |
+| | 6 表结构说明 | `docs/数据库总览.html` |
+| **项目三**<br>库存健康度与补货调拨 | 5 段查询 | `sql/06_inventory_replenishment.sql` |
+| | 补货 / 调拨建议表 | `excel/库存健康度与补货调拨建议表.xlsx`（6 个 sheet） |
+| | 成果页 | `report/项目三_库存补货调拨模型.pdf`（2 页） |
+| **三个项目共用** | 原始数据 | `data/` 6 张 csv + 去年同期模拟 |
+| | 完整作品集 | `report/数据分析作品集.pdf`（15 页：封面 + 看板 3 + 报告 9 + 项目三 2） |
+
 ## 数据说明
 
 本仓库数据为**模拟生成**的教学数据集（3 家门店 / 15 个商品 / 2026 年 7–9 月 / 2,542 笔订单），
